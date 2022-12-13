@@ -1,74 +1,3 @@
-<script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
-import MyButton from "./components/MyButton.vue";
-import { ref, reactive } from "vue";
-import UserForm from "./components/UserForm.vue";
-
-const content = "<h1>Content</h1>";
-
-const isMagenta = ref(false);
-
-const theme = reactive({
-  color: "white",
-  backgroundColor: "cyan",
-});
-
-function toggleMagenta() {
-  isMagenta.value = !isMagenta.value;
-}
-
-function toggleColor() {
-  if (theme.color === "white") {
-    theme.color = "black";
-    theme.backgroundColor = "yellow";
-  } else {
-    theme.color = "white";
-    theme.backgroundColor = "cyan";
-  }
-}
-
-const buttonsArray = [
-  {
-    title: "Button 1",
-    rounded: true,
-    color: "blue",
-  },
-  {
-    title: "Hello 2 - toggle color",
-    rounded: false,
-    color: "red",
-    onClick: toggleColor,
-  },
-  {
-    title: "Hello 3 - toggle magenta",
-    rounded: true,
-    color: "green",
-    onClick: toggleMagenta,
-  },
-];
-
-const buttonsObject = {
-  button1: {
-    title: "Button 1",
-    rounded: true,
-    color: "blue",
-  },
-  button2: {
-    title: "Hello 2 - toggle color",
-    rounded: false,
-    color: "red",
-    onClick: toggleColor,
-  },
-  button3: {
-    title: "Hello 3 - toggle magenta",
-    rounded: true,
-    color: "green",
-    onClick: toggleMagenta,
-  },
-};
-</script>
-
 <!--
   Vue 3 Composition API
   <script>
@@ -111,49 +40,52 @@ const buttonsObject = {
   }
   </script>
 -->
+<script setup>
+
+const initialValues = {
+  lastname: "",
+  firstname: "",
+  email: "",
+};
+
+</script>
 
 <template>
-  <UserForm />
-  <header
-    :style="{
-      backgroundColor: isMagenta ? 'magenta' : 'green',
-    }"
-  >
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="./assets/logo.svg"
-      width="125"
-      height="125"
-    />
+  <!--
+    <Formik
+        initialValues={{
+        firstName: '',
+    lastName: '',
+    email: '',
+    }}
+    onSubmit={async (values) => {
+    await new Promise((r) => setTimeout(r, 500));
+    alert(JSON.stringify(values, null, 2));
+    }}
+    >
+    <Form>
+      <label htmlFor="firstName">First Name</label>
+      <Field id="firstName" name="firstName" placeholder="Jane" />
 
-    <div class="wrapper">
-      <template
-        v-for="(button, index) in buttonsArray"
-        :key="button.title + index"
-      >
-        <MyButton v-bind="button" v-if="!button.rounded" />
-      </template>
-      <MyButton
-        v-for="(button, prop, index) in buttonsObject"
-        :key="button.title + prop + index"
-        v-bind="button"
+      <label htmlFor="lastName">Last Name</label>
+      <Field id="lastName" name="lastName" placeholder="Doe" />
+
+      <label htmlFor="email">Email</label>
+      <Field
+          id="email"
+          name="email"
+          placeholder="jane@acme.com"
+          type="email"
       />
-      <div v-if="isMagenta">
-        It's magenta
-        <div v-if="theme.backgroundColor === 'cyan'">and cyan</div>
-      </div>
-      <div v-else-if="theme.backgroundColor === 'cyan'">It's cyan</div>
-      <div v-else>It's not magenta</div>
-      <div v-show="isMagenta">It's magenta</div>
-      <HelloWorld msg="You did it!" msg2="Test" />
-      <p v-html="content"></p>
-    </div>
-  </header>
+      <button type="submit">Submit</button>
+    </Form>
+    </Formik>
+  -->
 
-  <main :style="theme">
-    <TheWelcome />
-  </main>
+
+  <Formik :initial-values="initialValues" :validation-schema :onSubmit>
+    <Field></Field>
+  </Formik>
 </template>
 
 <style scoped>
