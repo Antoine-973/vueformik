@@ -3,57 +3,32 @@
 import * as yup from "yup";
 import Formik from "./components/Form/Formik.vue";
 import Field from "./components/Form/Field.vue";
-import {ref} from "vue";
+import Captcha from "./components/Captcha.vue"
 
-const initialValues = ref({
-  name: "",
-  email: "",
-  password: "",
-});
+const initialValues = {
+  name: "fiuezhuifzh",
+};
 
 const validationSchema = yup.object({
-  name: yup.string().required(),
-  email: yup.string().email().required(),
-  password: yup.string().min(8).required(),
+  name: yup.string(),
 });
 
+const onSubmit = (values) => {
+  console.log("YAAAAAAAAAAAAA", values);
+}
+
+const options = Array.from({ length: 9 }, (_, i) => ({
+  id: i,
+  href: `https://picsum.photos/200?random=${i}`,
+}));
+
 </script>
-<template v-slot="defaut">
-  <Formik :initial-values="initialValues" :validation-schema="validationSchema" :onSubmit="()=>{}">
-    <form>
-      <Field type="text" value="name" placeholder="Your name" label="Your name" name="name"/>
-      <Field type="text" value="lastname" placeholder="Your lastname" label="Your lastname" name="lastname"/>
-      <Field type="password" value="password" placeholder="Your password" label="Your password" name="password"/>
+<template >
+  <Formik v-slot="{formik,submit}" :initialValues="initialValues" :validate="(values) => validationSchema.validateSync(values)" @submit="onSubmit">
+    <form @submit.prevent="submit">
+      <Field name="name" as="input" />
+      <Field name="captcha" :as="Captcha" v-model="captcha" :options="options"/>
       <button type="submit">Submit</button>
     </form>
   </Formik>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>

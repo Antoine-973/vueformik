@@ -1,49 +1,50 @@
 <template>
-  <div>
-    <!-- form with all Fields pass to the Formik component -->
-    <slot></slot>
-  </div>
+  <slot
+      :values="values"
+      :submit="handleSubmit"
+      :isSubmitting="isSubmitting"
+      :errors="errors"
+      :set="set"
+  ></slot>
 </template>
 
-<script>
-import Field from "./Field.vue";
-import {ref} from "vue";
+<script setup>
+import {defineProps, ref} from "vue";
+import {provide} from "vue";
 
-export default {
-  name: "Formik",
-  components: {
-    Field,
+const props = defineProps({
+  initialValues: {
+    type: Object,
   },
-  props: {
-    initialValues: {
-      type: Object,
-      default: () => initialValues,
-    },
-    validationSchema: {
-      type: Object,
-      default: () => validationSchema,
-    },
-    onSubmit: {
-      type: Function,
-      default: () => {},
-    },
+  validate: {
+    type: Function,
   },
-  setup(props) {
-    const values = ref(props.initialValues);
-    const handleChange = (e) => {
-      values.value[e.target.name] = e.target.value;
-    };
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      props.onSubmit(values.value);
-    };
-    return {
-      values,
-      props,
-      handleChange,
-      handleSubmit,
-    };
-  },
-};
+  onSubmit: {
+    type: Function,
+  }
+});
+
+const handleSubmit = () => {
+  console.log(values.value);
+  if (props.validate(values.value)) {
+    props.onSubmit(values.value);
+    isSubmitting.value = true;
+  } else {
+    errors.value = props.validate(values.value);
+  }
+}
+
+const values = ref(props.initialValues);
+const errors = ref([]);
+const isSubmitting = ref(false);
+
+function set(name, value) {
+  values.value.name = value;
+}
+
+provide("formikProvider", {
+  set,
+  values,
+});
 
 </script>
