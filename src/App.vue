@@ -19,10 +19,11 @@ const validationSchema = yup.object({
 
 </script>
 <template v-slot="defaut">
-
   <Formik :initial-values="initialValues" :validation-schema="validationSchema" :onSubmit="()=>{}">
     <form>
-      <Field name="name" label="Name" formtype="date" placeholder="antoine la merde"/>
+      <Field type="text" value="name" placeholder="Your name" label="Your name" name="name"/>
+      <Field type="text" value="lastname" placeholder="Your lastname" label="Your lastname" name="lastname"/>
+      <Field type="password" value="password" placeholder="Your password" label="Your password" name="password"/>
       <button type="submit">Submit</button>
     </form>
   </Formik>

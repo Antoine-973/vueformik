@@ -1,9 +1,7 @@
 <template>
   <div>
-    <h1>Formik</h1>
-    <form @submit.prevent="onSubmit">
-      <slot :values="values" :handleChange="handleChange" :name="name" />
-    </form>
+    <!-- form with all Fields pass to the Formik component -->
+    <slot></slot>
   </div>
 </template>
 
