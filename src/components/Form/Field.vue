@@ -1,21 +1,34 @@
-<!-- create a field component for formik which is a slot and need to be dynamic -->
-<!--this component need to be dynamic-->
-<!--this component need to be able to render different types of inputs-->
+<script>
+import {defineProps} from "vue";
 
+defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  label: {
+    type: String,
+    required: true,
+  },
+  placeholder: {
+    type: String,
+    required: true,
+  },
+  value: {
+    type: Object,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+});
+
+</script>
 <template>
   <div>
     <label :for="name">{{ label }}</label>
-    <input v-model:name :id="name" :name="name" :value="value" @input="handleChange" :type="formtype" />
+    <input v-model="name" :id="name" :name="name" :value="value" @input="handleChange" :type="formtype" :placeholder="placeholder"/>
   </div>
 </template>
 
-<script>
-const Field = {
-  name: "",
-  label: "",
-  formtype: "",
-  value: "",
-  handleChange: "",
-};
-
-</script>

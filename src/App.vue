@@ -1,90 +1,30 @@
-<!--
-  Vue 3 Composition API
-  <script>
-  import HelloWorld from "./components/HelloWorld.vue";
-  import TheWelcome from "./components/TheWelcome.vue";
-  import MyButton from "./components/MyButton.vue";
-
-
-  export default {
-    name: "App",
-    components: {
-      HelloWorld,
-      TheWelcome,
-      MyButton
-    },
-    setup() {
-      const content = "<h1>Content</h1>";
-      return {
-        content
-      };
-    }
-  }
-  </script>
--->
-
-<!--
-  Vue 2 ou Vue 3 Options API
-  <script>
-  import HelloWorld from "./components/HelloWorld.vue";
-  import TheWelcome from "./components/TheWelcome.vue";
-  import MyButton from "./components/MyButton.vue";
-
-  export default {
-    name: "App",
-    components: {
-      HelloWorld,
-      TheWelcome,
-      MyButton
-    }
-  }
-  </script>
--->
 <script setup>
 
-const initialValues = {
-  lastname: "",
-  firstname: "",
+import * as yup from "yup";
+import Formik from "./components/Form/Formik.vue";
+import Field from "./components/Form/Field.vue";
+import {ref} from "vue";
+
+const initialValues = ref({
+  name: "",
   email: "",
-};
+  password: "",
+});
+
+const validationSchema = yup.object({
+  name: yup.string().required(),
+  email: yup.string().email().required(),
+  password: yup.string().min(8).required(),
+});
 
 </script>
+<template v-slot="defaut">
 
-<template>
-  <!--
-    <Formik
-        initialValues={{
-        firstName: '',
-    lastName: '',
-    email: '',
-    }}
-    onSubmit={async (values) => {
-    await new Promise((r) => setTimeout(r, 500));
-    alert(JSON.stringify(values, null, 2));
-    }}
-    >
-    <Form>
-      <label htmlFor="firstName">First Name</label>
-      <Field id="firstName" name="firstName" placeholder="Jane" />
-
-      <label htmlFor="lastName">Last Name</label>
-      <Field id="lastName" name="lastName" placeholder="Doe" />
-
-      <label htmlFor="email">Email</label>
-      <Field
-          id="email"
-          name="email"
-          placeholder="jane@acme.com"
-          type="email"
-      />
+  <Formik :initial-values="initialValues" :validation-schema="validationSchema" :onSubmit="()=>{}">
+    <form>
+      <Field name="name" label="Name" formtype="date" placeholder="antoine la merde"/>
       <button type="submit">Submit</button>
-    </Form>
-    </Formik>
-  -->
-
-
-  <Formik :initial-values="initialValues" :validation-schema :onSubmit>
-    <Field></Field>
+    </form>
   </Formik>
 </template>
 

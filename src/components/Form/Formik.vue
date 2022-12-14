@@ -2,27 +2,14 @@
   <div>
     <h1>Formik</h1>
     <form @submit.prevent="onSubmit">
-      <slot :values="values" :handleChange="handleChange" :handleSubmit="handleSubmit" />
-      <Field name="" label="" formtype="" />
+      <slot :values="values" :handleChange="handleChange" :name="name" />
     </form>
   </div>
 </template>
 
 <script>
 import Field from "./Field.vue";
-import yup from "yup";
-
-const initialValues = {
-  name: "",
-  email: "",
-  password: "",
-};
-
-const validationSchema = yup.object({
-  name: yup.string().required(),
-  email: yup.string().email().required(),
-  password: yup.string().min(8).required(),
-});
+import {ref} from "vue";
 
 export default {
   name: "Formik",
@@ -45,8 +32,6 @@ export default {
   },
   setup(props) {
     const values = ref(props.initialValues);
-    const errors = ref({});
-    const touched = ref({});
     const handleChange = (e) => {
       values.value[e.target.name] = e.target.value;
     };
@@ -56,8 +41,7 @@ export default {
     };
     return {
       values,
-      errors,
-      touched,
+      props,
       handleChange,
       handleSubmit,
     };
