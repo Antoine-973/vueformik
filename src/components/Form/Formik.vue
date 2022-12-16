@@ -24,22 +24,28 @@ const props = defineProps({
   }
 });
 
-const handleSubmit = () => {
-  console.log(values.value);
-  if (props.validate(values.value)) {
-    props.onSubmit(values.value);
-    isSubmitting.value = true;
-  } else {
-    errors.value = props.validate(values.value);
-  }
-}
-
 const values = ref(props.initialValues);
+//create a ref for errors
 const errors = ref([]);
 const isSubmitting = ref(false);
 
+const handleSubmit = () => {
+  try {
+    props.validate(values.value);
+  } catch (e) {
+    errors.value = e.errors;
+    // errors.push(e.error);
+  }finally {
+    if (errors.value.length === 0) {
+      props.onSubmit(values.value);
+    }
+  }
+}
+
 function set(name, value) {
-  values.value.name = value;
+  console.log('formik',name, value)
+  values.value[name] = value;
+  errors.value = [];
 }
 
 provide("formikProvider", {

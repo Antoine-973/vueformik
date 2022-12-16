@@ -1,27 +1,34 @@
-<script>
+<script setup>
+import {defineProps, inject} from "vue";
 
-export default {
-  name: "Field",
-  inject: ["formikProvider"],
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    as: {
-      type: String || Object,
-      default: "input",
-    },
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
   },
-  methods: {
-    handleInput(e) {
-      this.formikProvider.set(this.name, e.target.value);
-    },
+  as: {
+    type: String || Object,
+    default: "input",
   },
-};
+});
+
+const formikData = inject("formikProvider");
+
+const handleInput = (e) => {
+  formikData.set(props.name, e.target.value);
+}
+
+const handleComponent = (e) => {
+  formikData.set(props.name, e)
+}
 
 </script>
 
 <template>
-  <component :is="as" :name="name" :value="formikProvider.values.value[name]" @input="handleInput" />
+  <component v-if="typeof as === 'string'"
+             :is="as" :name="name"
+             :value="formikData.values.value[name]" @input="handleInput"/>
+
+  <component v-else :is="as" :name="name"
+             :modelValue="formikData.values.value[name]" v-on:update:modelValue="handleComponent"/>
 </template>
